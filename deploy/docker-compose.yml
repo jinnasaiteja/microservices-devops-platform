@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: ../app/frontend
+    container_name: devops-frontend
+    ports:
+      - "8080:80"
+  api:
+    build: ../app/api
+    container_name: devops-api
+    ports:
+      - "8000:8000"
+    restart: always
+  worker:
+    build: ../app/worker
+    container_name: devops-worker
+    environment:
+      WORKER_NAME: worker-1
+    depends_on:
+      - api
+    restart: always

@@ -43,3 +43,7 @@ jobs:
         run: |
           cd app/worker
           docker build -t devops-worker .
+      - name: Build Frontend Docker image
+        run: |
+          cd app/frontend
+          docker build -t devops-frontend .
