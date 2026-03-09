@@ -24,18 +24,22 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install API dependencies
         run: |
           cd app/api
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Smoke test import
+      - name: Smoke test API import
         run: |
           cd app/api
           python -c "from main import app; print('FastAPI app imported successfully')"
 
-      - name: Build Docker image
+      - name: Build API Docker image
         run: |
           cd app/api
           docker build -t devops-api .
+      - name: Build Worker Docker image
+        run: |
+          cd app/worker
+          docker build -t devops-worker .
