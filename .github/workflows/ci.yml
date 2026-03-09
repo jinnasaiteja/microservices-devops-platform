@@ -2,34 +2,40 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: ["main", "dev"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   api-build-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Show repo structure
+        run: |
+          pwd
+          ls -R
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
-
-      - name: Show files
-        run: |
-          pwd
-          ls -la
-          find ../.. -maxdepth 3 -type f | sort
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
+          cd app/api
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       - name: Smoke test import
         run: |
+          cd app/api
           python -c "from main import app; print('FastAPI app imported successfully')"
+
       - name: Build Docker image
-        run: docker build -t devops-api .
+        run: |
+          cd app/api
+          docker build -t devops-api .
